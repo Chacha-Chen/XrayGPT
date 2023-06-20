@@ -2,4 +2,5 @@ datasets:
   mimic:
     data_type: images
     build_info:
-      storage: /home/omkarthawakar/fahad/XrayGPT/dataset/mimic_test
+      storage: /data/mimic_data/files/mimic-cxr-xraygpt
+      # /home/omkarthawakar/fahad/XrayGPT/dataset/mimic_test

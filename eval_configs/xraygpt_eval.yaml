@@ -5,10 +5,11 @@ model:
   freeze_qformer: True
   max_txt_len: 160
   end_sym: "###"
-  low_resource: True
+  low_resource: False ## TODO device_map='auto' error fix later
   prompt_path: "prompts/alignment.txt"
   prompt_template: '###Patient: {} ###Doctor: '
-  ckpt: '/home/omkarthawakar/fahad/MiniGPT-4/minigpt4/output/minigpt4_stage3_openi_6450_finetune/20230424182/checkpoint_4.pth'
+  ckpt: '/data/chacha/models/prerained_minigpt4_7b.pth'
+  # '/home/omkarthawakar/fahad/MiniGPT-4/minigpt4/output/minigpt4_stage3_openi_6450_finetune/20230424182/checkpoint_4.pth'
 
 
 datasets:

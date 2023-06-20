@@ -467,7 +467,7 @@ class RunnerBase:
         return self.task.test_epoch(
             epoch=epoch,
             model=self.model,
-            data_loader=self.train_loader,
+            data_loader=self.train_loader, ## there is no validation splits
             optimizer=self.optimizer,
             scaler=self.scaler,
             lr_scheduler=self.lr_scheduler,

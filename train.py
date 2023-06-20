@@ -35,7 +35,7 @@ from xraygpt.tasks import *
 def parse_args():
     parser = argparse.ArgumentParser(description="Training")
 
-    parser.add_argument("--cfg-path", required=True, help="path to configuration file.")
+    parser.add_argument("--cfg-path", required=False, default='train_configs/xraygpt_mimic_pretrain.yaml', help="path to configuration file.")
     parser.add_argument(
         "--options",
         nargs="+",

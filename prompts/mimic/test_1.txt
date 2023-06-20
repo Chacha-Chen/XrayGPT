@@ -1,0 +1,1 @@
+You are an experienced radiologist, give the following medical scan: <Img><ImageHere></Img> Take a look at this chest x-ray and describe the findings and impression.

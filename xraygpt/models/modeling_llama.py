@@ -71,6 +71,9 @@ class LlamaRMSNorm(nn.Module):
         if self.weight.dtype in [torch.float16, torch.bfloat16]:
             hidden_states = hidden_states.to(self.weight.dtype)
 
+        ## TODO ADHOC
+        # if hidden_states.device != torch.device('cuda:0'):
+        #     hidden_states = hidden_states.to(torch.device('cuda:0'))
         return self.weight * hidden_states
 
 
@@ -266,6 +269,11 @@ class LlamaDecoderLayer(nn.Module):
                 (see `past_key_values`).
             past_key_value (`Tuple(torch.FloatTensor)`, *optional*): cached past key and value projection states
         """
+        ## TODO ADHOC
+        # if hidden_states.device != torch.device('cuda:0'):
+        #     hidden_states = hidden_states.to(torch.device('cuda:0'))
+        #     attention_mask = attention_mask.to(torch.device('cuda:0'))
+        #     position_ids = position_ids.to(torch.device('cuda:0'))
 
         residual = hidden_states
 

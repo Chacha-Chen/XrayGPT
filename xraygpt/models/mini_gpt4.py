@@ -173,7 +173,7 @@ class MiniGPT4(Blip2Base):
         return inputs_llama, atts_llama
 
     def prompt_wrap(self, img_embeds, atts_img, prompt):
-        if prompt:
+        if prompt: 
             batch_size = img_embeds.shape[0]
             p_before, p_after = prompt.split('<ImageHere>')
             p_before_tokens = self.llama_tokenizer(
@@ -189,8 +189,8 @@ class MiniGPT4(Blip2Base):
             return img_embeds, atts_img
 
     def forward(self, samples):
-        image = samples["image"]
-        img_embeds, atts_img = self.encode_img(image)
+        image = samples["image"] # shape (batch_size, 3, 224, 224)
+        img_embeds, atts_img = self.encode_img(image) # shape (batch_size, 32, 4096) and (batch_size, 32)
         if hasattr(samples, 'question_split'):  # VQA dataset
             print('VQA Batch')
             vqa_prompt = '###Patient: <Img><ImageHere></Img> '
@@ -216,7 +216,7 @@ class MiniGPT4(Blip2Base):
             truncation=True,
             max_length=self.max_txt_len,
             add_special_tokens=False
-        ).to(image.device)
+        ).to(image.device) # shape (batch_size, max_txt_len)
 
         targets = to_regress_tokens.input_ids.masked_fill(
             to_regress_tokens.input_ids == self.llama_tokenizer.pad_token_id, -100
@@ -312,7 +312,7 @@ class MiniGPT4(Blip2Base):
     
 
     def get_context_emb(self, conv, img):
-        prompt = random.choice(self.prompt_list)
+        prompt = random.choice(self.prompt_list) ## random choice from prompt list
         text = prompt.split("<Img><ImageHere></Img>")[-1]
 
         if len(conv.messages) > 0 and conv.messages[-1][0] == conv.roles[0] \

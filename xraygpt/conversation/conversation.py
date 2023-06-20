@@ -111,9 +111,9 @@ CONV_VISION = Conversation(
            "You will be able to see the medical scan once I provide it to you. Please answer my questions.",
     roles=("Patient", "Doctor"),
     messages=[],
-    offset=2,
-    sep_style=SeparatorStyle.SINGLE,
-    sep="###",
+    offset=2, ## TODO why is this 2?
+    sep_style=SeparatorStyle.SINGLE, ## TODO what is this?
+    sep="###", 
 )
 
 
@@ -160,7 +160,7 @@ class Chat:
 
         embs = embs[:, begin_idx:]
 
-        outputs = self.model.llama_model.generate(
+        outputs = self.model.llama_model.generate( 
             inputs_embeds=embs,
             max_new_tokens=max_new_tokens,
             stopping_criteria=self.stopping_criteria,
@@ -171,7 +171,7 @@ class Chat:
             repetition_penalty=repetition_penalty,
             length_penalty=length_penalty,
             temperature=temperature,
-        )
+        ) ## TODO what is the different between llama_model generate vs. llmacausalML
         output_token = outputs[0]
         if output_token[0] == 0:  # the model might output a unknow token <unk> at the beginning. remove it
             output_token = output_token[1:]
@@ -215,7 +215,7 @@ class Chat:
             for i, seg in enumerate(prompt_segs)
         ]
         seg_embs = [self.model.llama_model.model.embed_tokens(seg_t) for seg_t in seg_tokens]
-        mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]]
+        mixed_embs = [emb for pair in zip(seg_embs[:-1], img_list) for emb in pair] + [seg_embs[-1]] ## img is always 32, 4096
         mixed_embs = torch.cat(mixed_embs, dim=1)
         return mixed_embs
 

@@ -1,0 +1,13 @@
+Report example 1:
+The chest x-ray shows normal cardiac, mediastinal, and hilar contours with clear lungs and normal pulmonary vasculature. No pleural effusion or pneumothorax is present. However, multiple clips are seen projecting over the left breast, and remote left-sided rib fractures are also demonstrated. The impression is that there is no acute cardiopulmonary abnormality detected.
+
+Report example 2:
+The chest x-ray shows no evidence of focal consolidation, effusion, or pneumothorax, and the cardiomediastinal silhouette is normal. Multiple clips projecting over the left breast and remote left-sided rib fractures are noted. No free air below the right hemidiaphragm is seen. The impression is that there is no acute intrathoracic process.
+
+Report example 3:
+Low lung volumes and tiny bilateral pleural effusions observed without any signs of pneumonia, pulmonary vascular congestion, focal consolidation, or pneumothorax. The heart is normal in size and stable while the aorta is markedly tortuous with aortic arch calcifications noted. The partially imaged upper abdomen is unremarkable. Overall impression suggests tiny pleural effusions and an otherwise unremarkable chest x-ray.
+
+Report example 4:
+This chest x-ray image shows hyperinflated lungs with flattened diaphragm consistent with emphysema, and an asymmetric opacity in the right middle lobe which is concerning for pneumonia. No pleural effusion or pneumothorax is seen, and cardiomediastinal contours are within normal limits aside from a tortuous aorta. The overall impression is a right middle lobe opacity concerning for pneumonia.
+
+You are an experienced radiologist, give the following medical scan: <Img><ImageHere></Img> Take a look at this chest x-ray and describe the findings and impression in the same style as the examples provided above:
