@@ -1,3 +1,5 @@
+# Example: python test_on_mimic_prompt.py --gpu-id 3 --prompt-txt-file test_1.txt --output-file-name debug.csv --debug 
+
 import argparse
 import os
 import random
@@ -22,13 +24,10 @@ from tqdm import tqdm
 
 BEAM_SIZE = 1
 TEMPERATURE = 1
-DEBUG = False
+SUBSET_LEN = 500
 ## save output to csv
 dir_prefix =  '/data/mimic_data/files/mimic-cxr-xraygpt'
 output_file_name = 'xraygpt_beam_{0}_temperature_{1}_output_all_validate.csv'.format(BEAM_SIZE, TEMPERATURE)
-# output_path = os.path.join(dir_prefix, file_name)
-# output_path = f'{dir_prefix}xraygpt_beam_{0}_temperature_{1}_output_all_validate.csv'.format(BEAM_SIZE, TEMPERATURE)
-# output_path = f'/data/mimic_data/files/mimic-cxr-xraygpt/xraygpt_beam_{0}_temperature_{1}_output_all_validate.csv'.format(BEAM_SIZE, TEMPERATURE)
 
 # test on test image
 split_path = '/data/mimic_data/files/mimic-cxr-resized/2.0.0/mimic-cxr-2.0.0-split.csv.gz'
@@ -41,6 +40,9 @@ def parse_args():
     parser.add_argument("--cfg-path", required=False, default='eval_configs/xraygpt_eval.yaml', help="path to configuration file.")
     parser.add_argument("--output-file-name", required=False, default=output_file_name, help="output file.")
     parser.add_argument("--gpu-id", type=int, default=3, help="specify the gpu to load the model.")
+    parser.add_argument("--debug", action="store_true", help="debug mode.")
+    parser.add_argument("--subset", action="store_true", help="subset of the dataset to use.")
+    parser.add_argument("--prompt-txt-file", required=False, default='test_1.txt', help="prompt txt file. stored inside prompts/mimic")
     parser.add_argument(
         "--options",
         nargs="+",
@@ -50,6 +52,7 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
 
 def setup_seeds(config):
     seed = config.run_cfg.seed + get_rank()
@@ -78,67 +81,58 @@ model = model_cls.from_config(model_config).to('cuda:{}'.format(args.gpu_id))
 vis_processor_cfg = cfg.datasets_cfg.openi.vis_processor.train
 vis_processor = registry.get_processor_class(vis_processor_cfg.name).from_config(vis_processor_cfg)
 promptresponse = PromptResponse(model, vis_processor, device='cuda:{}'.format(args.gpu_id))
-# chat = Chat(model, vis_processor, device='cuda:{}'.format(args.gpu_id))
 print('Initialization Finished')
 
 # ========================================
 
 def test_single_image(img_path):
-    # img_path = os.path.join(os.path.dirname(__file__), "images/example_test_images/img1.png")
-    # chat_state = CONV_VISION.copy()
+
     img_list = []
     img_emb = promptresponse.upload_img(img_path)
-    # llm_message = chat.upload_img(img_path, chat_state, img_list)
-    # chat_state, img_list = upload_img(img_path)
     img_list.append(img_emb)
-    # chatbot = []
-    ## change this to prompt txt file
-    # user_message ='Take a look at this chest x-ray and describe the findings and impression.'
-    # user_prompt = promptresponse.get_prompt('prompt.txt')
-    prompt_txt_file = '/data/chacha/XrayGPT/prompts/mimic/test_1.txt'
-    # input_query = 'Take a look at this chest x-ray and describe the findings and impression.' ## TODO try others
-    input_query = ''
+
+    # prompt_txt_file = '/data/chacha/XrayGPT/prompts/mimic/test_1.txt'
+    prompt_txt_file = os.path.join(os.path.dirname(__file__),'prompts/mimic', args.prompt_txt_file)
+    
+    input_query = '' ## addtional prompt that can be input instance specific
     output_text, output_token = promptresponse.generate_response(prompt_txt_file, input_query, img_list, max_new_tokens=300, num_beams=1)
-    # chat.ask(user_message, chat_state)
-    # chatbot = chatbot + [[user_message, None]]
-    # return '', chatbot, chat_state
-    # text_input, chatbot, chat_state = gradio_ask('Take a look at this chest x-ray and describe the findings and impression.', chatbot, chat_state)
-    # return chatbot, chat_state, img_list, llm_message ## why not return conv
-    # llm_message = chat.answer(conv=chat_state,
-    #                           img_list=img_list,
-    #                           num_beams=BEAM_SIZE,
-    #                           temperature=TEMPERATURE,
-    #                           max_new_tokens=300,
-    #                           max_length=2000)[0]
-    # chatbot[-1][1] = llm_message
-    # chatbot, chat_state, img_list, llm_message = gradio_answer(chatbot, chat_state, img_list, BEAM_SIZE, TEMPERATURE)
-    # print(llm_message)
+
     return output_text
 
 
 print('Start generating')   
 print('Output path: {}'.format(output_path))
-if not os.path.exists(os.path.dirname(output_path)):
+if not os.path.exists(os.path.dirname(output_path)) and not args.debug:
     with open(output_path, 'w') as f:
         ## TODO make sure the final output format contains two columns study_id and report
         f.write('dicom_id; study_id; subject_id; report\n')
 
 ## iterrow
+
+# total_generation_len = len(test_split)
+if args.subset:
+    total_generation_len = SUBSET_LEN
+else:
+    total_generation_len = len(test_split)
 with tqdm(total=len(test_split)) as pbar:
     count = 0
     for index, row in test_split.iterrows():
-        count += 1
+       
         dicom_id = row['dicom_id']
         img_path = '/data/mimic_data/files/mimic-cxr-xraygpt/image/' + dicom_id + '.jpg'
         output_text = test_single_image(img_path)
-        if DEBUG:
+        if args.debug:
             print(output_text)
         # print(llm_message)
 
-        if not DEBUG:
+        if not args.debug:
             with open(output_path, 'a') as f:
                 f.write(dicom_id + ';' + str(row['study_id']) + ';' + str(row['subject_id']) + ';'
                         + output_text + '\n')
         pbar.update(1)
-        if DEBUG and count == 10:
+        count += 1
+        if args.debug and count == 10:
+            break
+
+        if args.subset and count == SUBSET_LEN:
             break
