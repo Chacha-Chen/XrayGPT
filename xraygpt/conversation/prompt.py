@@ -76,7 +76,7 @@ class PromptResponse:
         if output_token[0] == 1:  # some users find that there is a start token <s> at the beginning. remove it
             output_token = output_token[1:]
         output_text = self.model.llama_tokenizer.decode(output_token, add_special_tokens=False)
-        # output_text = output_text.split('###')[0]  # remove the stop sign '###'
+        output_text = output_text.split('###')[0]  # remove the stop sign '###'
         # output_text = output_text.split('Doctor:')[-1].strip()
         # # conv.messages[-1][1] = output_text
         # output_text = output_text.replace("ChatDoctor", "XrayGPT") ### additionally added

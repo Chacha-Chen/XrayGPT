@@ -102,19 +102,24 @@ def test_single_image(img_path):
 
 print('Start generating')   
 print('Output path: {}'.format(output_path))
-if not os.path.exists(os.path.dirname(output_path)) and not args.debug:
-    with open(output_path, 'w') as f:
-        ## TODO make sure the final output format contains two columns study_id and report
-        f.write('dicom_id; study_id; subject_id; report\n')
+
+if os.path.exists(output_path) and not args.debug:
+    os.remove(output_path)
+
 
 ## iterrow
+COLUMNS = ['dicom_id', 'study_id', 'subject_id', 'report']
 
 # total_generation_len = len(test_split)
 if args.subset:
     total_generation_len = SUBSET_LEN
 else:
     total_generation_len = len(test_split)
-with tqdm(total=len(test_split)) as pbar:
+
+# save a dict first then convert to dataframe
+output_dict = {'dicom_id': [], 'study_id': [], 'subject_id': [], 'report': []}
+
+with tqdm(total=total_generation_len) as pbar:
     count = 0
     for index, row in test_split.iterrows():
        
@@ -126,9 +131,13 @@ with tqdm(total=len(test_split)) as pbar:
         # print(llm_message)
 
         if not args.debug:
-            with open(output_path, 'a') as f:
-                f.write(dicom_id + ';' + str(row['study_id']) + ';' + str(row['subject_id']) + ';'
-                        + output_text + '\n')
+            output_dict['dicom_id'].append(dicom_id)
+            output_dict['study_id'].append(row['study_id'])
+            output_dict['subject_id'].append(row['subject_id'])
+            output_dict['report'].append(output_text)
+            # with open(output_path, 'a') as f:
+            #     f.write(dicom_id + ';' + str(row['study_id']) + ';' + str(row['subject_id']) + ';'
+            #             + output_text + '\n')
         pbar.update(1)
         count += 1
         if args.debug and count == 10:
@@ -136,3 +145,7 @@ with tqdm(total=len(test_split)) as pbar:
 
         if args.subset and count == SUBSET_LEN:
             break
+
+if not args.debug:
+    output_df = pd.DataFrame(output_dict)
+    output_df.to_csv(output_path, index=False, columns=COLUMNS, sep='\t')
