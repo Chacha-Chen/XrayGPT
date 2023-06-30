@@ -1,0 +1,61 @@
+You are an experienced radiologist. Given a chest X-ray image and a list of positive conditions, report the findings in the image and include all given conditions. Put the generated report in quotation marks.
+
+Atelectasis, Support Devices
+Report:
+"Lower lung volumes resulting in an increase in mild bibasilar atelectasis. ET tube terminates approximately 3.2 cm above the carina."
+
+Cardiomegaly
+Report:
+"1.  No acute cardiac or pulmonary findings.  2.  Increased moderate-to-severe cardiomegaly.  3.  Hiatal hernia."
+
+Cardiomegaly, Consolidation, Edema, Pleural Effusion, Pneumonia, Support Devices
+Report:
+"Abnormality in the left lung is mild edema.  On the right, there is peripheral consolidation in the upper lobe, probably pneumonia.  Small right pleural effusion is also probably present.  Mild cardiomegaly and mediastinal vascular engorgement are stable.  No pneumothorax.  ET tube is in standard placement.  Right jugular line ends in the mid-to-low SVC and an upper enteric drainage tube passes into the stomach and out of view."
+    
+Edema, Lung Opacity
+Report:
+"Mild pulmonary edema and vascular engorgement.  Left hemidiaphragm is elevated, and there is opacification at the base of the left lung, which could be either atelectasis or pneumonia.  Pleural effusion, if any, is small.  The heart is normal size.  Pulmonary arteries are not as prominent as they were earlier.  No pneumothorax."
+    
+Atelectasis, Enlarged Cardiomediastinum
+Report:
+"There is substantial elevation of the left hemidiaphragmatic contour with adjacent basilar atelectatic.  No evidence of vascular congestion or acute focal pneumonia."
+    
+Fracture, Lung Opacity
+Report:
+"There is no evidence of pneumothorax. Of incidental note, there is opacification in the medullary cavity of the proximal right humerus, consistent with either old healed bone infarct or calcified enchondroma."
+    
+Atelectasis, Lung Lesion, Lung Opacity, Pleural Effusion
+Report:
+"Mildly dense left retrocardiac opacity obscuring the heart and left hemidiaphragm, left lower lobe atelectasis and pleural effusion.  Underlying pneumonia cannot be excluded."
+    
+Lung Opacity
+Report:
+"Retrocardiac opacity concerning for sickle crisis or pneumonia.  Clinical correlation advised."
+    
+No Finding
+Report:
+"No acute cardiopulmonary process."
+    
+Cardiomegaly, Edema, Pleural Effusion
+Report:
+"1.  Mild pulmonary edema and small right pleural effusion. 2.  Marked cardiomegaly."
+
+Enlarged Cardiomediastinum, Pleural Other
+Report:
+"Right apical pleural thickening with suspicious nodular opacity in the right upper lobe.  Recommend chest CT for further characterization and evaluation for neoplastic process.  CT will also help to clarify mediastinal morphology it was appears to be a colon interposition within the anterior mediastinum."
+    
+Lung Opacity, Pneumonia
+Report:
+"Low lung volumes with vague opacities in the lower lungs concerning for pneumonia and atelectasis."
+
+Atelectasis, Fracture, Lung Opacity, Pleural Effusion, Pneumothorax, Support Devices
+Report:
+"1.  On the initial image, the tip of the nasogastric tube is within a hiatal hernia, but on subsequent imaging it now appears to project just below the diaphragm.  There is a moderate-sized right pneumothorax with air surrounding the entire lung.  No left-sided pneumothorax is appreciated.  There is no evidence of tension at this time.  There are small bilateral effusions with associated airspace opacity likely reflecting compressive atelectasis. Cardiac and mediastinal contours are difficult to fully assess due to marked patient rotation on the current study.  No pulmonary edema.  Multiple right-sided rib fractures as well as right clavicular fracture is seen."
+
+Lung Lesion, Support Device
+Report:
+"Right Port-A-Cath terminates at the cavoatrial junction.  Multiple soft tissue density nodules are seen throughout both lungs and are suggestive of metastatic disease."
+
+<Img><ImageHere></Img>
+<INPUT_QUERY>
+Report:
