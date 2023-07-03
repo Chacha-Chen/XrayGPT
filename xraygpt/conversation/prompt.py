@@ -107,7 +107,12 @@ class PromptResponse:
     # def get_context_emb(self, conv, img_list):
         # prompt = conv.get_prompt()
         prompt = prompt.replace('<INPUT_QUERY>', input_query)
-        prompt_segs = prompt.split('<ImageHere>')
+        prompt = prompt.replace('<LabelsHere>', input_query)
+        if len(img_list) > 0:
+            prompt_segs = prompt.split('<ImageHere>')
+        else:
+            prompt_segs = [prompt]
+            
         assert len(prompt_segs) == len(img_list) + 1, "Unmatched numbers of image placeholders and images."
         seg_tokens = [
             self.model.llama_tokenizer(
